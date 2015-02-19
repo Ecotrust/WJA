@@ -1,0 +1,15 @@
+django>=1.7,<1.8
+djangorestframework<3.0
+jsonfield
+djangorestframework-gis
+django-allauth
+django-filter
+geopy==1.7.1
+
+# Testing
+ipdb
+ipython
+ipdbplugin
+django-nose
+coverage
+coveralls
