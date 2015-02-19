@@ -10,7 +10,7 @@
     dbname: 'wja' # no dash
 
     base_path: '/usr/local/apps/WJA'
-    project_path: '/usr/local/apps/WJA'
+    project_path: '/usr/local/apps/WJA/wja'
     webuser: www-data
     manage: "python3 {{ project_path }}/manage.py"
 
