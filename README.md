@@ -23,7 +23,7 @@ Viewer for tracking and utilizing available treated juniper.
 
 ### Initialize
 
-    spatialite dst/db.sqlite3 "SELECT InitSpatialMetaData();"
+    spatialite wja/db.sqlite3 "SELECT InitSpatialMetaData();"
     python manage.py migrate
     python manage.py createsuperuser
     # python manage.py systemcheck
