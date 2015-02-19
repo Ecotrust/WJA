@@ -49,56 +49,60 @@
           dest={{ base_path }}
           version={{ git_branch }}
 
-    # - name: settings local
-    #   tags:
-    #     - deploy
-    #   template: src=templates/settings_local.py dest={{ project_path }}/{{ app_name }}/settings_local.py owner={{ remote_user }} group={{ remote_user }} mode=0755
+    - name: settings local
+      tags:
+        - deploy
+      template: src=templates/settings_local.py dest={{ project_path }}/{{ app_name }}/settings_local.py owner={{ remote_user }} group={{ remote_user }} mode=0755
+
+    - name: fix annoying ubuntu pip bug
+      command: >
+        easy_install3 requests<2.4
 
     - name: Install global python *3* requirements
       pip: state=latest requirements={{ base_path }}/requirements.txt executable=pip3
 
-    # - name: create db user
-    #   sudo_user: postgres
-    #   # same as dbname
-    #   postgresql_user: name={{ dbname }} password={{ dbname }} role_attr_flags=CREATEDB,NOSUPERUSER
+    - name: create db user
+      sudo_user: postgres
+      # same as dbname
+      postgresql_user: name={{ dbname }} password={{ dbname }} role_attr_flags=CREATEDB,NOSUPERUSER
 
-    # - name: create postgres db
-    #   sudo_user: postgres
-    #   register: postgres_create_returncode
-    #   postgresql_db: name={{ dbname }}
-    #                   owner={{ dbname }}
-    #                   encoding='UTF-8'
-    #                   lc_collate='en_US.UTF-8'
-    #                   lc_ctype='en_US.UTF-8'
-    #                   template='template0'
+    - name: create postgres db
+      sudo_user: postgres
+      register: postgres_create_returncode
+      postgresql_db: name={{ dbname }}
+                      owner={{ dbname }}
+                      encoding='UTF-8'
+                      lc_collate='en_US.UTF-8'
+                      lc_ctype='en_US.UTF-8'
+                      template='template0'
 
-    # - name: load postgis
-    #   sudo_user: postgres
-    #   command: /usr/bin/psql -d {{ dbname }} -c "CREATE EXTENSION postgis;"
-    #   when: postgres_create_returncode['changed']
+    - name: load postgis
+      sudo_user: postgres
+      command: /usr/bin/psql -d {{ dbname }} -c "CREATE EXTENSION postgis;"
+      when: postgres_create_returncode['changed']
 
-    # - name: migrate
-    #   command: "{{ manage }} migrate --noinput"
+    - name: migrate
+      command: "{{ manage }} migrate --noinput"
 
-    # - name: collect static
-    #   command: "{{ manage }} collectstatic --noinput"
+    - name: collect static
+      command: "{{ manage }} collectstatic --noinput"
 
-    # - name: install nginx site
-    #   notify: reload nginx
-    #   template: src=templates/nginx.j2 dest=/etc/nginx/sites-available/{{ app_name }} owner=root group={{ remote_user }} mode=0754
+    - name: install nginx site
+      notify: reload nginx
+      template: src=templates/nginx.j2 dest=/etc/nginx/sites-available/{{ app_name }} owner=root group={{ remote_user }} mode=0754
 
-    # - name: enable nginx site
-    #   file: src=/etc/nginx/sites-available/{{ app_name }} dest=/etc/nginx/sites-enabled/{{ app_name }} owner=root group={{ remote_user }} state=link
+    - name: enable nginx site
+      file: src=/etc/nginx/sites-available/{{ app_name }} dest=/etc/nginx/sites-enabled/{{ app_name }} owner=root group={{ remote_user }} state=link
 
-    # - name: install uwsgi app
-    #   notify: restart uwsgi
-    #   template: src=templates/uwsgi.ini dest=/etc/uwsgi/apps-available/{{ app_name }}.ini owner=root group={{ remote_user }} mode=0754
+    - name: install uwsgi app
+      notify: restart uwsgi
+      template: src=templates/uwsgi.ini dest=/etc/uwsgi/apps-available/{{ app_name }}.ini owner=root group={{ remote_user }} mode=0754
 
-    # - name: enable uwsgi app
-    #   file: src=/etc/uwsgi/apps-available/{{ app_name }}.ini dest=/etc/uwsgi/apps-enabled/{{ app_name }}.ini owner=root group={{ remote_user }} state=link
+    - name: enable uwsgi app
+      file: src=/etc/uwsgi/apps-available/{{ app_name }}.ini dest=/etc/uwsgi/apps-enabled/{{ app_name }}.ini owner=root group={{ remote_user }} state=link
 
-    # - name: remove default site
-    #   file: path=/etc/nginx/sites-enabled/default state=absent
+    - name: remove default site
+      file: path=/etc/nginx/sites-enabled/default state=absent
 
     - name: remove all pyc files
       command: >
