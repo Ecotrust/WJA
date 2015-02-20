@@ -14,10 +14,7 @@ class Batch(models.Model):
     user = models.ForeignKey(User)
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
-    status = models.ChoiceField(choices=status_choices, default='failed')
-
-    class Meta:
-        abstract = True
+    status = models.CharField(choices=status_choices, max_length=255, blank=True, null=True, default='Failed')
 
     def __str__(self):
         return "Import by {} on {}: {}.".format(
