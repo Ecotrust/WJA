@@ -59,17 +59,21 @@ WSGI_APPLICATION = 'wja.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+       'ENGINE': 'django.contrib.gis.db.backends.spatialite',
+        'NAME': os.path.join(BASE_DIR, 'dst', 'db.sqlite3'),
     }
 }
+
+
+GEOMETRY_DB_SRID = 3857
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Los_Angeles'
 
 USE_I18N = True
 
@@ -83,3 +87,7 @@ USE_TZ = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'wja', 'static')
 STATIC_URL = '/static/'
+
+SERVER_SRID = 4326
+
+GEOJSON_SRID = 4326

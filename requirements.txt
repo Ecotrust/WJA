@@ -5,6 +5,7 @@ djangorestframework-gis
 django-allauth
 django-filter
 geopy==1.7.1
+pytz
 
 # Testing
 ipdb

@@ -1,4 +1,4 @@
-from django.db import models
+from django.contrib.gis.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 
@@ -99,16 +99,17 @@ class Treatment(models.Model):
     access = models.CharField(max_length=255, blank=True, null=True, default=None)
     treatment_date = models.DateField(auto_now=False, blank=True, null=True, default=None)
     treatment_type = models.CharField(max_length=255, blank=True, null=True, default=None)
-    treated_acres = models.FloatField()
+    treated_acres = models.FloatField(blank=True, null=True, default=None)
     average_slope = models.CharField(max_length=255, blank=True, null=True, default=None)
     #Check on this one
     current_status = models.CharField(max_length=255, blank=True, null=True, default=None)
     tree_species = models.CharField(max_length=255, blank=True, null=True, default=None)
     juniper_phase = models.CharField(max_length=255, blank=True, null=True, default=None)
-    average_dbh = models.IntegerField()
+    average_dbh = models.IntegerField(blank=True, null=True, default=None)
     tons_per_acre = models.CharField(max_length=255, blank=True, null=True, default=None)
-    latitude = models.FloatField()
-    longitude = models.FloatField()
+    latitude = models.FloatField(null=True, blank=True, default=None)
+    longitude = models.FloatField(null=True, blank=True, default=None)
+    geometry = models.PointField(srid=settings.SERVER_SRID, null=True, blank=True)
     contact_name = models.CharField(max_length=255, blank=True, null=True, default=None)
     contact_email = models.CharField(max_length=255, blank=True, null=True, default=None)
     contact_phone = models.CharField(max_length=255, blank=True, null=True, default=None)
