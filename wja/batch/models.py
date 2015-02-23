@@ -107,8 +107,6 @@ class Treatment(models.Model):
     juniper_phase = models.CharField(max_length=255, blank=True, null=True, default=None)
     average_dbh = models.IntegerField(blank=True, null=True, default=None)
     tons_per_acre = models.CharField(max_length=255, blank=True, null=True, default=None)
-    latitude = models.FloatField(null=True, blank=True, default=None)
-    longitude = models.FloatField(null=True, blank=True, default=None)
     geometry = models.PointField(srid=settings.SERVER_SRID, null=True, blank=True)
     contact_name = models.CharField(max_length=255, blank=True, null=True, default=None)
     contact_email = models.CharField(max_length=255, blank=True, null=True, default=None)
