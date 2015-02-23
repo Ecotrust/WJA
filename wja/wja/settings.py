@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
     'batch'
 )
 
@@ -60,7 +61,7 @@ WSGI_APPLICATION = 'wja.wsgi.application'
 DATABASES = {
     'default': {
        'ENGINE': 'django.contrib.gis.db.backends.spatialite',
-        'NAME': os.path.join(BASE_DIR, 'dst', 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'wja', 'db.sqlite3'),
     }
 }
 
