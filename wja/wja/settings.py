@@ -24,8 +24,16 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
+TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),
+    os.path.join(BASE_DIR, 'wja/templates'))
+
+# List of callables that know how to import templates from various sources.
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    # 'django.template.loaders.app_directories.Loader'
+)
 
 # Application definition
 
