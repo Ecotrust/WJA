@@ -9,6 +9,27 @@ from pytz import timezone
 import pytz
 
 
+class ImportEvent(models.Model):
+
+    importStatusChoices = (
+        ('complete', 'Complete'),
+        ('failed', 'Failed'),
+        ('running', 'Running'),
+        ('pending', 'Pending'),
+        ('unknown', 'Unknown')
+    )
+
+    date_created = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(
+        max_length=255,
+        choices=importStatusChoices,
+        default='unknown',
+        blank=False
+    )
+    notes = models.TextField()
+    user = models.ForeignKey(User)
+
+
 class TreatmentProject(models.Model):
     # Django model representing a point where a treatment occurred
 
@@ -74,12 +95,12 @@ class TreatmentProject(models.Model):
         ('Unknown', 'Unknown')
     )
 
-    uid = models.IntegerField(primary_key=True)
-    source = models.CharField(max_length=255)
-    name = models.CharField(max_length=255)
+    unique_id = models.IntegerField(primary_key=True)
+    data_source = models.CharField(max_length=255)
+    project_name = models.CharField(max_length=255)
     ownership = models.CharField(
         max_length=255,
-        choices=OwnershipChoices,
+        choices=ownershipChoices,
         default='Unknown',
         blank=False
     )
@@ -89,38 +110,38 @@ class TreatmentProject(models.Model):
         default='Unknown',
         blank=False
     )
-    completion_date = models.DateTimeField(blank=False)
-    treatement_type = models.CharField(
+    treatment_date = models.DateTimeField(blank=False)
+    treatment_type = models.CharField(
         max_length=255,
         choices=treatmentChoices,
         default='Unknown',
         blank=False
     )
     treated_acres = models.IntegerField()
-    avg_slope = models.CharField(
+    average_slope = models.CharField(
         max_length=255,
         choices=slopeChoices,
         default='Unknown',
         blank=False
     )
-    status = models.CharField(
+    current_status = models.CharField(
         max_length=255,
         choices=statusChoices,
         default='Unknown',
         blank=False
     )
-    species = models.CharField(
+    tree_species = models.CharField(
         max_length=255,
         default='Western Juniper',
         blank=False
     )
-    phase = models.CharField(
+    juniper_phase = models.CharField(
         max_length=255,
         choices=phaseChoices,
         default='Unknown',
         blank=False
     )
-    avg_dbh = models.IntegerField()
+    average_dbh = models.IntegerField()
     tons_per_acre = models.CharField(
         max_length=255,
         choices=densityChoices,
@@ -128,11 +149,11 @@ class TreatmentProject(models.Model):
         blank=False
     )
     latitude = models.DecimalField(
-        max_digits=20
+        max_digits=20,
         decimal_places=16
     )
     longitude = models.DecimalField(
-        max_digits=20
+        max_digits=20,
         decimal_places=16
     )
     contact_name = models.CharField(
@@ -151,27 +172,10 @@ class TreatmentProject(models.Model):
         default=None
     )
     objects = models.GeoManager()
+    batch = models.ForeignKey(ImportEvent)
 
-
-class ImportEvent(models.Model):
-
-    importStatusChoices = (
-        ('complete', 'Complete'),
-        ('failed', 'Failed'),
-        ('running', 'Running'),
-        ('pending', 'Pending'),
-        ('unknown', 'Unknown')
-    )
-
-    date = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(
-        max_length=255,
-        choices=importStatusChoices,
-        default='unknown',
-        blank=False
-    )
-    notes = models.TextField()
-    user = models.ForeignKey(User)
+    def __str__(self):
+        return "{}: `{}`".format(self.project_name, self.treatment_date)
 
 
 """

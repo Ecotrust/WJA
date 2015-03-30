@@ -26,8 +26,10 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),
-    os.path.join(BASE_DIR, 'wja/templates'))
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'templates'),
+    os.path.join(BASE_DIR, 'wja/templates')
+)
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -45,7 +47,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
-    'batch'
+    'ui'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -68,7 +70,7 @@ WSGI_APPLICATION = 'wja.wsgi.application'
 
 DATABASES = {
     'default': {
-       'ENGINE': 'django.contrib.gis.db.backends.spatialite',
+        'ENGINE': 'django.contrib.gis.db.backends.spatialite',
         'NAME': os.path.join(BASE_DIR, 'wja', 'db.sqlite3'),
     }
 }
