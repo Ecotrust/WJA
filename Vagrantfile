@@ -13,6 +13,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |dev|
   #  'modifyvm', :id,
   #  "--memory", 868,
   #  "--cpus", 2]
+  dev.vm.provision "ansible" do |ansible|
+    ansible.limit = "dev"
+    ansible.inventory_path = "deploy/hosts"
+    ansible.playbook = "deploy/provision.yml"
+  end
 end
   
 #Vagrant.configure(VAGRANTFILE_API_VERSION) do |stage|
