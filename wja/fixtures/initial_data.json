@@ -1,10 +1,28 @@
 [
 {
+  "model": "auth.user", 
+  "pk": 1,
+  "fields": {
+    "email": "user@email.com", 
+    "is_active": true, 
+    "is_staff": true, 
+    "password": "pbkdf2_sha256$15000$KttseilC4ES0$lcSj0KJ3sdB+3Qa765eadfBxoW0KDwkdrGBydXuQ4Jk=", 
+    "groups": [], 
+    "is_superuser": true, 
+    "username": "admin", 
+    "date_joined": "2015-03-31T20:40:51.833Z", 
+    "last_name": "", 
+    "first_name": "", 
+    "last_login": "2015-03-31T20:41:05.433Z", 
+    "user_permissions": []
+  }
+},
+{
   "model": "ui.importevent",
   "pk": 1,
   "fields": {
     "status": "complete",
-    "user": 2,
+    "user": 1,
     "notes": "Created artificially",
     "date_created": "2015-03-30T22:17:07.254Z"
   }
