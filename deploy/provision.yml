@@ -108,7 +108,7 @@
       command: "{{ manage }} migrate --noinput"
 
     - name: load initial data 
-      command: "{{ manage }} loaddata fixtures/initial_data.json"
+      command: "{{ manage }} loaddata {{ project_path }}/fixtures/initial_data.json"
 
     - name: collect static
       command: "{{ manage }} collectstatic --noinput"
