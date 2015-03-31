@@ -1,0 +1,64 @@
+[
+{
+  "model": "ui.importevent",
+  "pk": 1,
+  "fields": {
+    "status": "complete",
+    "user": 2,
+    "notes": "Created artificially",
+    "date_created": "2015-03-30T22:17:07.254Z"
+  }
+},
+{
+  "model": "ui.treatmentproject",
+  "pk": 1,
+  "fields": {
+    "treatment_date": "2015-03-30T22:18:28Z",
+    "average_slope": "20",
+    "treated_acres": 125,
+    "juniper_phase": "II",
+    "project_name": "Test Project",
+    "tree_species": "Western Juniper",
+    "batch": 1,
+    "average_dbh": 8,
+    "location": "POINT (-13653583.2866980005055666 5698573.3334649996832013)",
+    "contact_phone": "503-467-0800",
+    "treatment_type": "Lop and scatter",
+    "data_source": "BLM",
+    "contact_email": "rhodges@ecotrust.org",
+    "ownership": "BLM",
+    "current_status": "Cut",
+    "latitude": "45.487346649171315",
+    "access": "Public",
+    "longitude": "-122.65222549439662",
+    "tons_per_acre": "7-10",
+    "contact_name": "Ryan Hodges"
+  }
+},
+{
+  "model": "ui.treatmentproject",
+  "pk": 2,
+  "fields": {
+    "treatment_date": "2015-03-31T18:40:15Z",
+    "average_slope": "10",
+    "treated_acres": 12,
+    "juniper_phase": "III",
+    "project_name": "Another Treatment",
+    "tree_species": "Western Juniper",
+    "batch": 1,
+    "average_dbh": 5,
+    "location": "POINT (-13222879.7415679991245270 5374125.3198589999228716)",
+    "contact_phone": "503-467-0800",
+    "treatment_type": "Mechanical thin and yard",
+    "data_source": "BLM",
+    "contact_email": "rhodges@ecotrust.org",
+    "ownership": "BLM",
+    "current_status": "Cut",
+    "latitude": "43.406982421872385",
+    "access": "Private",
+    "longitude": "-118.7831497192492",
+    "tons_per_acre": "3-5",
+    "contact_name": "Ryan Hodges"
+  }
+}
+]
