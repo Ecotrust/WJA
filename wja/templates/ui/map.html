@@ -1,3 +1,4 @@
+{% load static from staticfiles %}
 <!doctype html>
 <html lang="en">
   <head>
@@ -10,8 +11,8 @@
     <link rel="stylesheet" href="http://openlayers.org/en/v3.4.0/resources/layout.css" type="text/css">
     <link rel="stylesheet" href="http://openlayers.org/en/v3.4.0/resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700" type="text/css">
+    <link rel="stylesheet" href="{% static "ui/styles/map.css" %}" type="text/css">
 
-    
     <title>Juniper Utilization Viewer</title>
   </head>
   <body style="padding-top:0">
@@ -19,48 +20,18 @@
     <h1>Juniper Utilization Viewer</h1>
     {% block content %}
     <div style="width: 700px; height: 450px" id="map" class="map"></div>
-    <br />
-    <br />
 
-    <p>{{ imports }}</p>
-    <p>{{ sites }}</p>
-    
     {% endblock %}
-
-
 
     {% block scripts %}
     <script src="http://openlayers.org/en/v3.4.0/resources/jquery.min.js" type="text/javascript"></script>
     <script src="http://openlayers.org/en/v3.4.0/resources/example-behaviour.js" type="text/javascript"></script>
-    <!-- <script src="http://openlayers.org/en/v3.4.0/examples/loader.js?id=simple" type="text/javascript"></script> -->
     <script src="http://openlayers.org/en/v3.4.0/build/ol.js" type="text/javascript"></script>
-    <!-- <script src="http://openlayers.org/en/v3.4.0/examples/simple.js" type="text/javascript"></script> -->
     <script>
       var imports = {{ imports|safe }};
       var sites = {{ sites|safe }};
-      var geo = JSON.parse(sites[0].point);
     </script>
-    <script>
-      var map = new ol.Map({
-        // TODO: add a feature layer, add "geo"
-        layers: [
-          new ol.layer.Tile({
-            source: new ol.source.OSM()
-          })
-        ],
-        controls: ol.control.defaults({
-          attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
-            collapsible: false
-          })
-        }),
-        renderer: exampleNS.getRendererFromQueryString(),
-        target: 'map',
-        view: new ol.View({
-          center: [0, 0],
-          zoom: 2
-        })
-      });
-    </script>
+    <script src="{% static "ui/scripts/map.js" %}" type="text/javascript"></script>
     {% endblock %}
 
   </body>

@@ -2,3 +2,4 @@ deploy/hosts
 *.pyc
 wja/db.sqlite3
 wja/wja/db.sqlite3
+wja/wja/static
