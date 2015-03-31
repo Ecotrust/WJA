@@ -29,6 +29,17 @@ class ImportEvent(models.Model):
     notes = models.TextField()
     user = models.ForeignKey(User)
 
+    def to_dict(self):
+        datetz = self.date_created.replace(tzinfo=datetime.timezone.utc)
+        localdatetz = datetz.astimezone(tz=None)
+        date_string = localdatetz.strftime("%I:%M %p %b %d, %Y %Z")
+        return {
+            'user': str(self.user),
+            'date_created': date_string,
+            'status': str(self.status),
+            'notes': str(self.notes),
+        }
+
 
 class TreatmentProject(models.Model):
     # Django model representing a point where a treatment occurred
@@ -173,6 +184,34 @@ class TreatmentProject(models.Model):
     )
     objects = models.GeoManager()
     batch = models.ForeignKey(ImportEvent)
+
+    def to_dict(self):
+        datetz = self.treatment_date.replace(tzinfo=datetime.timezone.utc)
+        localdatetz = datetz.astimezone(tz=None)
+        date_string = localdatetz.strftime("%I:%M %p %b %d, %Y %Z")
+        return {
+            'id': self.unique_id,
+            'source': self.data_source,
+            'name': self.project_name,
+            'ownership': self.ownership,
+            'access': self.access,
+            'date': treatment_date,
+            'treatment_type': self.treatment_type,
+            'treated_acres': self.treated_acres,
+            'average_slope': self.average_slope,
+            'current_status': self.current_status,
+            'tree_species': self.tree_species,
+            'juniper_phase': self.juniper_phase,
+            'average_dbh': self.average_dbh,
+            'tons_per_acre': self.tons_per_acre,
+            'latitude': self.latitude,
+            'longitude': self.longitude,
+            'contact_name': self.contact_name,
+            'contact_email': self.contact_email,
+            'contact_phone': self.contact_phone,
+            'batch': self.batch.to_dict(),
+            'point': self.location.geojson
+        }
 
     def __str__(self):
         return "{}: `{}`".format(self.project_name, self.treatment_date)
