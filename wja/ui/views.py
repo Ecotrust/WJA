@@ -6,6 +6,7 @@ from django.template import RequestContext, loader
 import json
 from ui.models import ImportEvent, TreatmentProject
 from datetime import date, datetime
+from django.contrib.admin.views.decorators import staff_member_required
 
 
 # Create your views here.
@@ -25,3 +26,19 @@ def mapview(request, template_name='ui/map.html', extra_context={}):
 
     context.update(extra_context)
     return HttpResponse(template.render(context))
+
+
+def import_admin(
+    request,
+    template_name='admin/ui/import_admin.html',
+    extra_context={}
+):
+    template = loader.get_template(template_name)
+    context = RequestContext(
+        request, {}
+    )
+
+    context.update(extra_context)
+    return HttpResponse(template.render(context))
+
+import_admin = staff_member_required(import_admin)

@@ -9,7 +9,7 @@ urlpatterns = patterns(
     '',
     # Examples:
     # url(r'^$', 'wja.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
+    url(r'^admin/import/$', 'ui.views.import_admin'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'ui.views.mapview'),
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
