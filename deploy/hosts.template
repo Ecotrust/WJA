@@ -11,3 +11,5 @@ git_branch=master
 debug=True
 domain=localhost:8010
 secretkey=*******
+database=postgres
+db_user=postgres

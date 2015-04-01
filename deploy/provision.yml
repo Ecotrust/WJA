@@ -51,10 +51,11 @@
           dest={{ base_path }}
           version={{ git_branch }}
 
-    - name: settings local
+    - name: local settings
+      when: database == 'postgres'
       tags:
         - deploy
-      template: src=templates/settings_local.py dest={{ project_path }}/{{ app_name }}/settings_local.py owner={{ remote_user }} group={{ remote_user }} mode=0755
+      template: src=templates/settings_local.py dest={{ project_path }}/{{ app_name }}/local_settings.py owner={{ remote_user }} group={{ remote_user }} mode=0755
 
     - name: fix annoying ubuntu pip bug
       command: >
@@ -66,43 +67,50 @@
     - name: Install global python *3* requirements
       pip: state=latest requirements={{ base_path }}/requirements.txt executable=pip3 # virtualenv={{ env_path }}
 
-    - stat: path={{ project_path }}/wja/db.sqlite3
+    - name: check for spatialite db
+      stat: path={{ project_path }}/wja/db.sqlite3
       register: db_file
 
     - name: remove old db
       when: db_file.stat.exists == True
       command: rm {{ project_path }}/wja/db.sqlite3
 
-    - name: create db
+    - name: create spatialte db
+      when: database == 'sqlite'
       command: spatialite {{ project_path }}/wja/db.sqlite3 "SELECT InitSpatialMetaData();"
 
-    # - name: create db user
-    #   sudo_user: postgres
-    #   # same as dbname
-    #   postgresql_user: name={{ dbname }} password={{ dbname }} role_attr_flags=CREATEDB,NOSUPERUSER
-
-    # - name: create postgres db
-    #   sudo_user: postgres
-    #   register: postgres_create_returncode
-    #   postgresql_db: name={{ dbname }}
-    #                   owner={{ dbname }}
-    #                   encoding='UTF-8'
-    #                   lc_collate='en_US.UTF-8'
-    #                   lc_ctype='en_US.UTF-8'
-    #                   template='template0'
-
-    # # may need to set owner of /usr/local/apps/wja/wja/db.sqlite3 to vagrant
-
-    # - name: load postgis
-    #   sudo_user: postgres
-    #   command: /usr/bin/psql -d {{ dbname }} -c "CREATE EXTENSION postgis;"
-    #   when: postgres_create_returncode['changed']
-
     - name: chown db
+      when: database == 'sqlite'
       command: chown vagrant {{ project_path }}/wja/db.sqlite3
 
     - name: chown db dir
+      when: database == 'sqlite'
       command: chown vagrant {{ project_path }}/wja/
+
+    - name: create db user
+      when: database == 'postgres'
+      sudo_user: postgres
+      # same as dbname
+      postgresql_user: name={{ dbname }} password={{ dbname }} role_attr_flags=CREATEDB,NOSUPERUSER
+
+    - name: create postgres db
+      when: database == 'postgres'
+      sudo_user: postgres
+      register: postgres_create_returncode
+      postgresql_db: name={{ dbname }}
+                      owner={{ dbname }}
+                      encoding='UTF-8'
+                      lc_collate='en_US.UTF-8'
+                      lc_ctype='en_US.UTF-8'
+                      template='template0'
+
+    # may need to set owner of /usr/local/apps/wja/wja/db.sqlite3 to vagrant
+
+    - name: load postgis
+      when: database == 'postgres'
+      sudo_user: postgres
+      command: /usr/bin/psql -d {{ dbname }} -c "CREATE EXTENSION postgis;"
+      when: postgres_create_returncode['changed']
 
     - name: migrate
       command: "{{ manage }} migrate --noinput"
