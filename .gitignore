@@ -3,3 +3,4 @@ deploy/hosts
 wja/db.sqlite3
 wja/wja/db.sqlite3
 wja/wja/static
+wja/wja/local_settings.py
