@@ -103,3 +103,8 @@ STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 SERVER_SRID = 4326
 
 GEOJSON_SRID = 4326
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass

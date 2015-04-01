@@ -1,0 +1,26 @@
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'make_this_unique'
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+# Database
+# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        # 'ENGINE': 'django.contrib.gis.db.backends.spatialite',
+        # 'NAME': os.path.join(BASE_DIR, 'wja', 'db.sqlite3'),
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'wja',
+        'USER': 'user',
+        'PASSWORD': 'db_pwd',
+        'HOST': 'localhost',
+    }
+}
+
+ADMINS = (('Admin Name', 'email@address.com'),)
+
+ALLOWED_HOSTS = ['localhost']
