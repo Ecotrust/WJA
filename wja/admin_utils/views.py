@@ -5,19 +5,36 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .forms import UploadTreatmentsForm
 import datetime
 from wja import settings
+import xlrd
 
 
 def handle_imported_treatment_file(f):
     timestamp = datetime.datetime.now().timestamp()
-    with open(
-        '%s/uploaded/treatments_%s.xslx' % (
-            settings.MEDIA_ROOT,
-            str(timestamp)
-        ),
-        'wb+'
-    ) as destination:
+    new_file = '%s/uploaded/treatments_%s.xslx' % (
+        settings.MEDIA_ROOT,
+        str(timestamp)
+    )
+    with open(new_file, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
+
+    book = xlrd.open_workbook(new_file)     #Try replacing 'new_file' with 'f' and not saving anything!
+    if not book.nsheets == 1:
+        import ipdb
+        ipdb.set_trace()
+    sheet = book.sheet_by_index(0)
+    headers = sheet.row_values(0)
+
+    # TODO:
+    # save new import event
+    # get import id
+    # make lookup table for headers and db cols
+    # loop through rows (can we get row count?)
+    #   cell = sheet.cell(row,column)
+    #   treat_obj[headers_lookup[headers[column]]] = cell.value
+    # create object of values, including adding import event id
+    # save as new Treatment
+    # when done, update import status to complete
 
 
 def import_admin(

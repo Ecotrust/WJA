@@ -51,6 +51,9 @@
           dest={{ base_path }}
           version={{ git_branch }}
 
+    - name: chown download dir
+      command: chown postgres -R {{ project_path }}/media
+
     - name: local settings
       when: database == 'postgres'
       tags:
