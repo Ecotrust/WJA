@@ -107,6 +107,33 @@ GEOJSON_SRID = 4326
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+HEADER_LOOKUP = {
+    'Unique ID': 'unique_id',
+    'Data Source': 'data_source',
+    'Project Name': 'project_name',
+    'Ownership': 'ownership',
+    'Access': 'access',
+    'Expected or Completed Treatment Date': 'treatment_date',
+    'Treatment Type': 'treatment_type',
+    'Treated Acres': 'treated_acres',
+    'Average Slope': 'average_slope',
+    'Current Status': 'current_status',
+    'Tree Species': 'tree_species',
+    'Juniper Phase': 'juniper_phase',
+    'Average DBH': 'average_dbh',
+    'Tons/Acre': 'tons_per_acre',
+    'Latitude': 'latitude',
+    'Longitude': 'longitude',
+    'Contact Name': 'contact_name',
+    'Contact Email': 'contact_email',
+    'Contact Phone': 'contact_phone'
+}
+
+HEADER_REVERSE_LOOKUP = {}
+for key in HEADER_LOOKUP.keys():
+    value = HEADER_LOOKUP[key]
+    HEADER_REVERSE_LOOKUP[value] = key
+
 try:
     from .local_settings import *
 except ImportError:

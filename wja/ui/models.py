@@ -26,7 +26,7 @@ class ImportEvent(models.Model):
         default='unknown',
         blank=False
     )
-    notes = models.TextField()
+    notes = models.TextField(null=True, blank=True, default=None)
     user = models.ForeignKey(User)
 
     def to_dict(self):
