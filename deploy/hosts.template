@@ -13,3 +13,4 @@ domain=localhost:8010
 secretkey=*******
 database=postgres
 db_user=postgres
+upload_group=vagrant

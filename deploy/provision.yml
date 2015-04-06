@@ -14,6 +14,7 @@
     webuser: www-data
     manage: "python3 {{ project_path }}/manage.py"
     env_path: '{{ base_path }}/venv'
+    media_dir: '{{ project_path }}/media'
 
   tasks:
 
@@ -51,8 +52,20 @@
           dest={{ base_path }}
           version={{ git_branch }}
 
-    - name: chown download dir
-      command: chown postgres -R {{ project_path }}/media
+    - name: test the test
+      command: echo $media_group.stat.exists
+
+    - name: create media group
+      group: name={{ upload_group }} state=present
+
+    - name: add user to media group
+      user: name={{ remote_user }} groups={{ upload_group }} state=present append=yes
+
+    - name: chgrp download dir
+      command: chgrp {{ upload_group }} -R {{media_dir }}
+
+    - name: chmod download dir
+      command: chmod 775 -R {{ media_dir }}
 
     - name: local settings
       when: database == 'postgres'
