@@ -212,9 +212,17 @@ class TreatmentProject(models.Model):
     batch = models.ForeignKey(ImportEvent)
 
     def to_dict(self):
-        datetz = self.treatment_date.replace(tzinfo=datetime.timezone.utc)
-        localdatetz = datetz.astimezone(tz=None)
-        date_string = localdatetz.strftime("%I:%M %p %b %d, %Y %Z")
+        if self.treatment_date is not None:
+            datetz = self.treatment_date.replace(tzinfo=datetime.timezone.utc)
+            localdatetz = datetz.astimezone(tz=None)
+            date_string = localdatetz.strftime("%I:%M %p %b %d, %Y %Z")
+        else:
+            date_string = ''
+        if self.location is not None:
+            point = self.location.geojson
+        else:
+            point = None
+
         return {
             'id': self.unique_id,
             'source': self.data_source,
@@ -236,7 +244,7 @@ class TreatmentProject(models.Model):
             'contact_email': self.contact_email,
             'contact_phone': self.contact_phone,
             'batch': self.batch.to_dict(),
-            'point': self.location.geojson
+            'point': point
         }
 
     def __str__(self):

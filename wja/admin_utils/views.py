@@ -7,6 +7,7 @@ import datetime
 from wja import settings
 import xlrd
 from ui.models import *
+from django.contrib.gis.geos import Point
 
 
 def handle_imported_treatment_file(f, user):
@@ -55,9 +56,13 @@ def handle_imported_treatment_file(f, user):
                         settings.HEADER_LOOKUP[header],
                         value
                     )
+        if treatment.latitude is not None and treatment.latitude != '' and treatment.longitude is not None and treatment.longitude != '':
+            point = Point(treatment.longitude, treatment.latitude, srid=4326)
+            setattr(treatment, 'location', point)
+
         treatment.save()
         saved_count += 1
-        
+
     setattr(import_event, 'status', 'complete')
     import_event.save()
 
