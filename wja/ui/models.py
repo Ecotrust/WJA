@@ -121,14 +121,22 @@ class TreatmentProject(models.Model):
         default='Unknown',
         blank=False
     )
-    treatment_date = models.DateTimeField(blank=False)
+    treatment_date = models.DateTimeField(
+        blank=True,
+        null=True,
+        default=None
+    )
     treatment_type = models.CharField(
         max_length=255,
         choices=treatmentChoices,
         default='Unknown',
         blank=False
     )
-    treated_acres = models.IntegerField()
+    treated_acres = models.IntegerField(
+        blank=True,
+        null=True,
+        default=None
+    )
     average_slope = models.CharField(
         max_length=255,
         choices=slopeChoices,
@@ -152,7 +160,11 @@ class TreatmentProject(models.Model):
         default='Unknown',
         blank=False
     )
-    average_dbh = models.IntegerField()
+    average_dbh = models.IntegerField(
+        blank=True,
+        null=True,
+        default=None
+    )
     tons_per_acre = models.CharField(
         max_length=255,
         choices=densityChoices,
@@ -161,20 +173,34 @@ class TreatmentProject(models.Model):
     )
     latitude = models.DecimalField(
         max_digits=20,
-        decimal_places=16
+        decimal_places=16,
+        blank=True,
+        null=True,
+        default=None
     )
     longitude = models.DecimalField(
         max_digits=20,
-        decimal_places=16
+        decimal_places=16,
+        blank=True,
+        null=True,
+        default=None
     )
     contact_name = models.CharField(
         max_length=255,
-        blank=False
+        blank=True,
+        null=True,
+        default=None
     )
-    contact_email = models.EmailField()
+    contact_email = models.EmailField(
+        blank=True,
+        null=True,
+        default=None
+    )
     contact_phone = models.CharField(
         max_length=30,
-        blank=True
+        blank=True,
+        null=True,
+        default=None
     )
     location = models.PointField(
         srid=settings.GEOMETRY_DB_SRID,

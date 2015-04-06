@@ -33,49 +33,32 @@ def handle_imported_treatment_file(f, user):
     for rownum in range(1, rowcount):
         if not sheet.cell(rownum, id_index).ctype == 2:
             num_rows = rownum-2
-            print('Blank row found: row %s' % str(rownum))
             break
         cell_id = sheet.cell(rownum, id_index).value
         treatment, created = TreatmentProject.objects.get_or_create(
-            unique_id=cell_id
+            unique_id=cell_id,
+            defaults={'batch': import_event}
         )
-        print('Treatment with ID %s created' % str(cell_id))
+        setattr(treatment, 'batch', import_event)
         for colnum, header in enumerate(headers):
             if colnum != id_index:
                 cell = sheet.cell(rownum, colnum)
-                if cell.ctype == 3:
-                    xldate = cell.value
-                    time_tuple = xlrd.xldate_as_tuple(xldate, datemode)
-                    value = datetime.datetime(*time_tuple)
-                else:
-                    value = cell.value
-                setattr(
-                    treatment,
-                    settings.HEADER_LOOKUP[header],
-                    value
-                )
-                print('Treatment field %s updated with value %s' % (
-                    settings.HEADER_LOOKUP[header],
-                    str(value)
-                ))
-        try:
-            treatment.save()
-        except TypeError:
-            import ipdb
-            ipdb.set_trace()
+                if cell.value is not None and cell.value != '':
+                    if cell.ctype == 3:
+                        xldate = cell.value
+                        time_tuple = xlrd.xldate_as_tuple(xldate, datemode)
+                        value = datetime.datetime(*time_tuple)
+                    else:
+                        value = cell.value
+                    setattr(
+                        treatment,
+                        settings.HEADER_LOOKUP[header],
+                        value
+                    )
+        treatment.save()
         saved_count += 1
-        print('Treatment %s saved. %s total treatments saved' % (
-            str(cell_id),
-            str(saved_count)
-        ))
-
-    if saved_count != num_rows:
-        print('Saved: %s' % str(saved_count))
-        print('Rows imported" %s' % str(num_rows))
-        import ipdb
-        ipdb.set_trace()
-
-    setattr(import_event, status, 'complete')
+        
+    setattr(import_event, 'status', 'complete')
     import_event.save()
 
     # TODO:
