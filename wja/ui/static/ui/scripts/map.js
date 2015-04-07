@@ -123,10 +123,12 @@ selectFeature.on('select', function(e) {
       table_html = table_html + '<tr><td>' + popup_fields[i][1] +
         '</td><td> ' + properties[popup_fields[i][0]] + '</td></tr>';
     }
-    table_html = table_html + '</table></div>';
+    table_html = table_html + '</table>';
 
     content.innerHTML = '<h3 class="popup-title">' + properties.name + ':</h3>' +
-        '<div class="well">' + table_html + '</div>';
+        '<div class="well">' + table_html +
+        '</div><a href="/treatment/' + properties.id +
+        '">More Info</a>';
 
     overlay.setPosition(ol.proj.transform(coordinate, 'EPSG:4326', 'EPSG:3857'));
   } else {
