@@ -38,7 +38,9 @@ for (var i = 0; i < sites.length; i++) {
   var geo = JSON.parse(sites[i].point);
   features.push({
     'type': 'Feature',
-    'geometry': geo
+    'id': sites[i].id,
+    'geometry': geo,
+    'properties': sites[i]
   });
 }
 
@@ -93,21 +95,37 @@ var treatmentLayer = new ol.layer.Vector({
 // var center = ol.proj.transform([-122, 45], 'EPSG:4326', 'EPSG:3857');
 var center = [-13446448.706997469, 5479654.361694783];
 
-var map = new ol.Map({
-  interactions: ol.interaction.defaults().extend([
-    new ol.interaction.Select({
-      style: new ol.style.Style({
-        image: new ol.style.Circle({
-          radius: 5,
-          fill: new ol.style.Fill({
-            color: '#FF0000'
-          }),
-          stroke: new ol.style.Stroke({
-            color: '#000000'
-          })
-        })
+var selectFeature = new ol.interaction.Select({
+  style: new ol.style.Style({
+    image: new ol.style.Circle({
+      radius: 5,
+      fill: new ol.style.Fill({
+        color: '#FF0000'
+      }),
+      stroke: new ol.style.Stroke({
+        color: '#000000'
       })
     })
+  })
+});
+
+selectFeature.on('select', function(e) {
+  if (e.selected.length > 0) {
+    feat = e.selected[0];
+    var coordinate = [parseFloat(feat.getProperties().longitude), parseFloat(feat.getProperties().latitude)];
+    var hdms = ol.coordinate.toStringHDMS(coordinate);
+
+    content.innerHTML = '<p>You clicked here:</p><code>' + hdms +
+        '</code>';
+    overlay.setPosition(ol.proj.transform(coordinate, 'EPSG:4326', 'EPSG:3857'));
+  } else {
+     overlay.setPosition(undefined);
+  }
+});
+
+var map = new ol.Map({
+  interactions: ol.interaction.defaults().extend([
+    selectFeature
   ]),
   layers: [baseLayer, treatmentLayer],
   controls: ol.control.defaults({
@@ -125,17 +143,3 @@ var map = new ol.Map({
 });
 
 // map.getView().setCenter(ol.proj.transform([-122, 45], 'EPSG:4326', 'EPSG:3857'));
-
-
-/**
- * Add a click handler to the map to render the popup.
- */
-map.on('singleclick', function(evt) {
-  var coordinate = evt.coordinate;
-  var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
-      coordinate, 'EPSG:3857', 'EPSG:4326'));
-
-  content.innerHTML = '<p>You clicked here:</p><code>' + hdms +
-      '</code>';
-  overlay.setPosition(coordinate);
-});
