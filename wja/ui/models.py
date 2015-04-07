@@ -215,7 +215,7 @@ class TreatmentProject(models.Model):
         if self.treatment_date is not None:
             datetz = self.treatment_date.replace(tzinfo=datetime.timezone.utc)
             localdatetz = datetz.astimezone(tz=None)
-            date_string = localdatetz.strftime("%I:%M %p %b %d, %Y %Z")
+            date_string = localdatetz.strftime("%b %d, %Y")
         else:
             date_string = ''
         if self.location is not None:
