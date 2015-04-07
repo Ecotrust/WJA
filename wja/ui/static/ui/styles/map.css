@@ -32,6 +32,15 @@ body {
     height: 100vh;
 }
 
+.popup-table {
+    min-width: 200px;
+}
+
+.popup-table tr td {
+    padding: 5px;
+    border: 1px solid #CCC;
+}
+
 .ol-popup {
   position: absolute;
   background-color: white;

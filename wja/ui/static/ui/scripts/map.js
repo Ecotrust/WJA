@@ -111,12 +111,23 @@ var selectFeature = new ol.interaction.Select({
 
 selectFeature.on('select', function(e) {
   if (e.selected.length > 0) {
-    feat = e.selected[0];
-    var coordinate = [parseFloat(feat.getProperties().longitude), parseFloat(feat.getProperties().latitude)];
+    var feat = e.selected[0];
+    var properties = feat.getProperties();
+    var coordinate = [parseFloat(properties.longitude), parseFloat(properties.latitude)];
     var hdms = ol.coordinate.toStringHDMS(coordinate);
 
-    content.innerHTML = '<p>You clicked here:</p><code>' + hdms +
-        '</code>';
+    popup_fields = [['date', 'Date'], ['treated_acres', 'Treated Acres'], ['juniper_phase', 'Phase']];
+
+    table_html = '<table class="popup-table">';
+    for (var i = 0; i < popup_fields.length; i++) {
+      table_html = table_html + '<tr><td>' + popup_fields[i][1] +
+        '</td><td> ' + properties[popup_fields[i][0]] + '</td></tr>';
+    }
+    table_html = table_html + '</table></div>';
+
+    content.innerHTML = '<h3>' + properties.name + ':</h3>' +
+        '<div class="well">' + table_html + '</div>';
+
     overlay.setPosition(ol.proj.transform(coordinate, 'EPSG:4326', 'EPSG:3857'));
   } else {
      overlay.setPosition(undefined);
