@@ -125,7 +125,7 @@ selectFeature.on('select', function(e) {
     }
     table_html = table_html + '</table></div>';
 
-    content.innerHTML = '<h3>' + properties.name + ':</h3>' +
+    content.innerHTML = '<h3 class="popup-title">' + properties.name + ':</h3>' +
         '<div class="well">' + table_html + '</div>';
 
     overlay.setPosition(ol.proj.transform(coordinate, 'EPSG:4326', 'EPSG:3857'));

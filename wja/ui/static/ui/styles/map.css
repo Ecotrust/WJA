@@ -32,6 +32,10 @@ body {
     height: 100vh;
 }
 
+.popup-title {
+    margin-top: 0;
+}
+
 .popup-table {
     min-width: 200px;
 }
