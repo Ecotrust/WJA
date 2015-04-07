@@ -5,3 +5,5 @@ wja/wja/db.sqlite3
 wja/wja/static
 wja/wja/local_settings.py
 wja/media/uploaded/*
+wja/ui/static/ui/scripts/ol3-layerswitcher.js
+wja/ui/static/ui/styles/ol3-layerswitcher.css

@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="http://openlayers.org/en/v3.4.0/resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700" type="text/css">
     <link rel="stylesheet" href="{% static "ui/styles/map.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "ui/styles/ol3-layerswitcher.css" %}" type="text/css">
 
     <title>Juniper Utilization Viewer</title>
   </head>
@@ -28,6 +29,7 @@
     <script src="http://openlayers.org/en/v3.4.0/resources/jquery.min.js" type="text/javascript"></script>
     <script src="http://openlayers.org/en/v3.4.0/resources/example-behaviour.js" type="text/javascript"></script>
     <script src="http://openlayers.org/en/v3.4.0/build/ol.js" type="text/javascript"></script>
+    <script src="{% static "ui/scripts/ol3-layerswitcher.js" %}"></script>
     <script>
       var imports = {{ imports|safe }};
       var sites = {{ sites|safe }};

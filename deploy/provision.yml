@@ -52,8 +52,20 @@
           dest={{ base_path }}
           version={{ git_branch }}
 
-    - name: test the test
-      command: echo $media_group.stat.exists
+    - name: check for ol3-layerswitcher
+      stat: path={{ base_path }}/ol3-layerswitcher
+      register: layerswitcher
+
+    - name: git checkout layerswitcher
+      when: layerswitcher.stat.exists==false
+      git: repo=https://github.com/walkermatt/ol3-layerswitcher.git
+          dest={{ base_path }}/ol3-layerswitcher/
+
+    - name: copy ol3-layerswitcher script into place
+      command: cp {{ base_path }}/ol3-layerswitcher/src/ol3-layerswitcher.js {{ project_path }}/ui/static/ui/scripts/ol3-layerswitcher.js
+
+    - name: copy ol3-layerswitcher styles into place
+      command: cp {{ base_path }}/ol3-layerswitcher/src/ol3-layerswitcher.css {{ project_path }}/ui/static/ui/styles/ol3-layerswitcher.css
 
     - name: create media group
       group: name={{ upload_group }} state=present
@@ -62,7 +74,7 @@
       user: name={{ remote_user }} groups={{ upload_group }} state=present append=yes
 
     - name: chgrp download dir
-      command: chgrp {{ upload_group }} -R {{media_dir }}
+      command: chgrp {{ upload_group }} -R {{ media_dir }}
 
     - name: chmod download dir
       command: chmod 775 -R {{ media_dir }}
