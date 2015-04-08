@@ -17,6 +17,7 @@ body {
     z-index: 100;
     margin: 15px 15px 15px 15px;
     right: 15px;
+    bottom: 15px;
     background-color: #EEE;
     border-radius: 15px;
     padding: 12px;
@@ -85,6 +86,10 @@ body {
 }
 .ol-popup-closer:after {
   content: "✖";
+}
+
+.layer-switcher {
+  top: 15px;
 }
 
 .container-fluid {

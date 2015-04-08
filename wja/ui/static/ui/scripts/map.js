@@ -1,4 +1,4 @@
-// POPUPS
+// POPUPS ///////////////////////////////////////////////////////////////////////
 
 /**
  * Elements that make up the popup.
@@ -30,7 +30,7 @@ var overlay = new ol.Overlay(/** @type {olx.OverlayOptions} */ ({
   }
 }));
 
-//Features
+//Features ///////////////////////////////////////////////////////////////////////
 
 var features = [];
 
@@ -60,6 +60,8 @@ var styleFunction = function(feature, resolution) {
   return styles[feature.getGeometry().getType()];
 };
 
+// Layers ///////////////////////////////////////////////////////////////////////
+
 var vectorSource = new ol.source.GeoJSON(
     /** @type {olx.source.GeoJSONOptions} */ ({
       object: {
@@ -84,13 +86,95 @@ var treatmentStyle = new ol.style.Style({
 });
 
 var baseLayer = new ol.layer.Tile({
-  source: new ol.source.OSM()
+  title: 'Base Map',
+  source: new ol.source.OSM(),
+  type: 'base',
+  visible: true
+});
+
+var attribution = new ol.Attribution({
+  html: 'Tiles &copy; <a href="http://services.arcgisonline.com/ArcGIS/' +
+      'rest/services/World_Terrain_Base/MapServer">ArcGIS</a>'
+});
+
+var terrain = new ol.layer.Tile({
+  title: "Terrain Base Map",
+  source: new ol.source.XYZ({
+    attributions: [attribution],
+    url: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}"
+  }),
+  type: 'base',
+  visible: false
+});
+
+var natGeoAttribution = new ol.Attribution({
+  html: 'Tiles &copy; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC'
+});
+
+var natGeo = new ol.layer.Tile({
+  title: "National Geographic Base Map",
+  source: new ol.source.XYZ({
+    attributions: [natGeoAttribution],
+    url: "http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}"
+  }),
+  type: 'base',
+  visible: false
+});
+
+var baseMaps = new ol.layer.Group({
+  'title': 'Base maps',
+  layers: [baseLayer, terrain, natGeo]
 });
 
 var treatmentLayer = new ol.layer.Vector({
+  title: 'Juniper Treatments',
   source: vectorSource,
   style: styleFunction
 });
+
+var acecLayer = new ol.layer.Tile({
+  title:'Areas of Critical <br />Environmental Concern',
+  source: new ol.source.XYZ({
+    attributions: [],
+    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/acec/{z}/{x}/{y}.png'
+  }),
+  visible: false
+});
+
+var BLMMechTreatLayer = new ol.layer.Tile({
+  title:'BLM Mechanical Treatment',
+  source: new ol.source.XYZ({
+    attributions: [],
+    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/blm_mech_treat/{z}/{x}/{y}.png'
+  }),
+  visible: false
+});
+
+var BLMGrazingAllotmentLayer = new ol.layer.Tile({
+  title:'BLM Grazing Allotments',
+  source: new ol.source.XYZ({
+    attributions: [],
+    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/blm_grazing_allot/{z}/{x}/{y}.png'
+  }),
+  visible: false
+});
+
+var BLMLandsLayer = new ol.layer.Tile({
+  title:'BLM Lands',
+  source: new ol.source.XYZ({
+    attributions: [],
+    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/blm_lands/{z}/{x}/{y}.png'
+  }),
+  visible: false
+});
+
+
+var overlays = new ol.layer.Group({
+  'title': 'Overlays',
+  layers: [BLMGrazingAllotmentLayer, BLMLandsLayer, acecLayer, BLMMechTreatLayer, treatmentLayer]
+});
+
+// SELECTION  ///////////////////////////////////////////////////////////////////////
 
 // var center = ol.proj.transform([-122, 45], 'EPSG:4326', 'EPSG:3857');
 var center = [-13446448.706997469, 5479654.361694783];
@@ -136,11 +220,13 @@ selectFeature.on('select', function(e) {
   }
 });
 
+// MAP  ///////////////////////////////////////////////////////////////////////
+
 var map = new ol.Map({
   interactions: ol.interaction.defaults().extend([
     selectFeature
   ]),
-  layers: [baseLayer, treatmentLayer],
+  layers: [baseMaps, overlays],
   controls: ol.control.defaults({
     attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
       collapsible: false
@@ -154,5 +240,10 @@ var map = new ol.Map({
     zoom: 6
   })
 });
+
+var layerSwitcher = new ol.control.LayerSwitcher({
+        // tipLabel: 'Legend' // Optional label for button
+});
+map.addControl(layerSwitcher);
 
 // map.getView().setCenter(ol.proj.transform([-122, 45], 'EPSG:4326', 'EPSG:3857'));
