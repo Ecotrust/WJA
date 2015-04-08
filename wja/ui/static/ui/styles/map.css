@@ -5,7 +5,7 @@ body {
 .title {
     position: fixed;
     z-index: 100;
-    margin: 15px 50px;
+    margin: 15px 0 0 15px;
     background-color: #CCC;
     background-color: rgba(255, 255, 255, 0.4);
     border-radius: 15px;
@@ -87,9 +87,35 @@ body {
 .ol-popup-closer:after {
   content: "✖";
 }
+.ol-zoom {
+  right: 10px;
+  left: inherit;
+  top: 70px;
+}
 
 .layer-switcher {
   top: 15px;
+  max-height: 90%;
+  overflow-y: auto;
+  z-index: 101;
+}
+.layer-switcher ul {
+  padding-left: 0;
+  margin-left: 10px;
+}
+.layer-switcher ul li ul {
+  padding-left: 0;
+  margin-left: 10px;
+}
+.layer-switcher .panel {
+  margin-bottom: 0;
+  width: 270px;
+}
+.layer-switcher label {
+  padding-left: 4px;
+}
+.layer-switcher input {
+  margin-top: 2px;
 }
 
 .container-fluid {

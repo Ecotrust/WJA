@@ -85,11 +85,13 @@ var treatmentStyle = new ol.style.Style({
   'fillOpacity': 0.2
 });
 
-var baseLayer = new ol.layer.Tile({
-  title: 'Base Map',
+// BASE LAYERS -----------------------------------------------------
+
+var osmLayer = new ol.layer.Tile({
+  title: 'Open Street Map',
   source: new ol.source.OSM(),
   type: 'base',
-  visible: true
+  visible: false
 });
 
 var attribution = new ol.Attribution({
@@ -112,7 +114,7 @@ var natGeoAttribution = new ol.Attribution({
 });
 
 var natGeo = new ol.layer.Tile({
-  title: "National Geographic Base Map",
+  title: "National Geographic",
   source: new ol.source.XYZ({
     attributions: [natGeoAttribution],
     url: "http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}"
@@ -121,19 +123,143 @@ var natGeo = new ol.layer.Tile({
   visible: false
 });
 
-var baseMaps = new ol.layer.Group({
-  'title': 'Base maps',
-  layers: [baseLayer, terrain, natGeo]
+var topoAttribution = new ol.Attribution({
+  html: 'Tiles &copy; <a href="http://services.arcgisonline.com/ArcGIS/' +
+      'rest/services/World_Topo_Map/MapServer">ArcGIS, USGS</a>'
 });
 
+var topoMapDigital = new ol.layer.Tile({
+  title: "Topo Map",
+  source: new ol.source.XYZ({
+    attributions: [topoAttribution],
+    url: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"
+  }),
+  type: 'base',
+  visible: false
+});
+
+// var topoQuadResolutions = [
+//   156543.03392804097,
+//   78271.51696402048,
+//   39135.75848201024,
+//   19567.87924100512,
+//   9783.93962050256,
+//   4891.96981025128,
+//   2445.98490512564,
+//   1222.99245256282,
+//   611.49622628141,
+//   305.748113140705,
+//   152.8740565703525,
+//   76.43702828517625,
+//   38.21851414258813,
+//   19.109257071294063,
+//   9.554628535647032,
+//   4.777314267823516
+// ];
+
+// var topoMapQuads = new ol.layer.Tile({
+//   title: "Topo Map (Quads)",
+//   source: new ol.source.XYZ({
+//     attributions: [topoAttribution],
+//     // tileGrid: new ol.tilegrid.TileGrid({
+//     //   resolutions: topoQuadResolutions
+//     // }),
+//     url: "http://server.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer/tile/{z}/{y}/{x}"
+//   }),
+//   minResolution: 4.777314267823516,
+//   type: 'base',
+//   visible: false
+// });
+
+var mapquestAttribution = new ol.Attribution({
+  html: '<p>Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png"></p>'
+});
+
+var mapquestHybridBaseLayer = new ol.layer.Tile({
+  title: 'Hybrid',
+  visible: true,
+  type: 'base',
+  source: new ol.source.MapQuest({layer: 'sat'})
+});
+
+var mapquestHybridLabelLayer = new ol.layer.Tile({
+  visible: true,
+  source: new ol.source.MapQuest({layer: 'hyb'})
+});
+
+var mapquestHybrid = new ol.layer.Group({
+  title: 'Hybrid-Header',
+  style: 'AerialWithLabels',
+  layers: [
+    mapquestHybridBaseLayer,
+    mapquestHybridLabelLayer
+  ]
+});
+
+var baseMaps = new ol.layer.Group({
+  'title': 'Base maps',
+  layers: [topoMapDigital, natGeo, osmLayer, mapquestHybrid]
+});
+
+ // OVERLAYS -----------------------------------------------------
+
 var treatmentLayer = new ol.layer.Vector({
-  title: 'Juniper Treatments',
+  // title: 'Juniper Treatments',
   source: vectorSource,
   style: styleFunction
 });
 
+var SageGrouseGenHabitat = new ol.layer.Tile({
+  title:'Sage Grouse General Hab.',
+  source: new ol.source.XYZ({
+    attributions: [],
+    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/sage_grouse_lowden/{z}/{x}/{y}.png'
+  }),
+  visible: false
+});
+
+var SageGrousePriorityHabitat = new ol.layer.Tile({
+  title:'Sage Grouse Priority Hab.',
+  source: new ol.source.XYZ({
+    attributions: [],
+    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/sage_grouse_core/{z}/{x}/{y}.png'
+  }),
+  visible: false
+});
+
+var USFWSLands = new ol.layer.Tile({
+  title:'USFWS Lands',
+  source: new ol.source.XYZ({
+    attributions: [],
+    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/USFWS_lands/{z}/{x}/{y}.png'
+  }),
+  visible: false
+});
+
+var Slope20 = new ol.layer.Tile({
+  title:'Slope > 20%',
+  source: new ol.source.XYZ({
+    attributions: [],
+    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/slope_gt_20/{z}/{x}/{y}.png'
+  }),
+  visible: false
+});
+
+var HwyAttribution = new ol.Attribution({
+  html: 'Source: ESRI, Tele Atlas North America'
+});
+
+var ESRIHighways = new ol.layer.Tile({
+  title:'Major USA Highways',
+  source: new ol.source.XYZ({
+    attributions: [HwyAttribution],
+    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/ESRI_highways/{z}/{x}/{y}.png'
+  }),
+  visible: false
+});
+
 var acecLayer = new ol.layer.Tile({
-  title:'Areas of Critical <br />Environmental Concern',
+  title:'Areas of Critical Env. Concern',
   source: new ol.source.XYZ({
     attributions: [],
     url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/acec/{z}/{x}/{y}.png'
@@ -168,10 +294,150 @@ var BLMLandsLayer = new ol.layer.Tile({
   visible: false
 });
 
+var landOwnership = new ol.layer.Tile({
+  title:'Ownership',
+  source: new ol.source.XYZ({
+    attributions: [],
+    url: 'http://tiles.ecotrust.org/tiles/LOT_protareas/{z}/{x}/{y}.png'
+  }),
+  visible: false
+});
+
+var counties = new ol.layer.Tile({
+  title:'County Boundaries',
+  source: new ol.source.XYZ({
+    attributions: [],
+    url: 'http://tiles.ecotrust.org/tiles/LOT_counties/{z}/{x}/{y}.png'
+  }),
+  visible: false
+});
+
+var publicRoads = new ol.layer.Tile({
+  title:'Public Roads',
+  source: new ol.source.XYZ({
+    attributions: [],
+    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/public_rds/{z}/{x}/{y}.png'
+  }),
+  visible: false
+});
+
+var juniperPhase1 = new ol.layer.Tile({
+  title:'Juniper Phase 1 (INR)',
+  source: new ol.source.XYZ({
+    attributions: [],
+    url: 'http://apps.ecotrust.org/tiles/juniper/pngs/JUNP1/{z}/{x}/{y}.png'
+  }),
+  visible: false
+});
+
+var juniperPhase2 = new ol.layer.Tile({
+  title:'Juniper Phase 2 (INR)',
+  source: new ol.source.XYZ({
+    attributions: [],
+    url: 'http://apps.ecotrust.org/tiles/juniper/pngs/JUNP2/{z}/{x}/{y}.png'
+  }),
+  visible: false
+});
+
+var juniperPhase3 = new ol.layer.Tile({
+  title:'Juniper Phase 3 (INR)',
+  source: new ol.source.XYZ({
+    attributions: [],
+    url: 'http://apps.ecotrust.org/tiles/juniper/pngs/JUNP3/{z}/{x}/{y}.png'
+  }),
+  visible: false
+});
+
+var juniperPhase50 = new ol.layer.Tile({
+  title:'Juniper 50%+ (INR)',
+  source: new ol.source.XYZ({
+    attributions: [],
+    url: 'http://apps.ecotrust.org/tiles/juniper/pngs/INR_GTR50/{z}/{x}/{y}.png'
+  }),
+  visible: false
+});
+
+var ILAPJunP1 = new ol.layer.Tile({
+  title:'Juniper Phase 1 (ILAP)',
+  source: new ol.source.XYZ({
+    attributions: [],
+    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/jun_p1/{z}/{x}/{y}.png'
+  }),
+  visible: false
+});
+
+var ILAPJunP2 = new ol.layer.Tile({
+  title:'Juniper Phase 2 (ILAP)',
+  source: new ol.source.XYZ({
+    attributions: [],
+    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/jun_p2/{z}/{x}/{y}.png'
+  }),
+  visible: false
+});
+
+var ILAPJunP3 = new ol.layer.Tile({
+  title:'Juniper Phase 3 (ILAP)',
+  source: new ol.source.XYZ({
+    attributions: [],
+    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/jun_p3/{z}/{x}/{y}.png'
+  }),
+  visible: false
+});
+
+var ILAPLayers = new ol.layer.Group({
+  'title': 'ILAP Data',
+  layers: [
+    ILAPJunP3,
+    ILAPJunP2,
+    ILAPJunP1
+  ]
+});
+
+var INRLayers = new ol.layer.Group({
+  'title': 'INR Data',
+  layers: [
+    juniperPhase50,
+    juniperPhase3,
+    juniperPhase2,
+    juniperPhase1
+  ]
+});
+
+var juniperLayers = new ol.layer.Group({
+  'title': 'Juniper',
+  layers: [
+    ILAPLayers,
+    INRLayers
+    // ILAPJunP3,
+    // ILAPJunP2,
+    // ILAPJunP1,
+    // juniperPhase50,
+    // juniperPhase3,
+    // juniperPhase2,
+    // juniperPhase1
+  ]
+});
+
+var treatmentLayers = new ol.layer.Group({
+  layers: [treatmentLayer]
+});
 
 var overlays = new ol.layer.Group({
   'title': 'Overlays',
-  layers: [BLMGrazingAllotmentLayer, BLMLandsLayer, acecLayer, BLMMechTreatLayer, treatmentLayer]
+  layers: [
+    // BLMGrazingAllotmentLayer,
+    // acecLayer,
+    // BLMMechTreatLayer,
+    publicRoads,
+    ESRIHighways,
+    Slope20,
+    counties,
+    // USFWSLands,
+    // BLMLandsLayer,
+    landOwnership,
+    SageGrousePriorityHabitat,
+    SageGrouseGenHabitat
+  ]
 });
 
 // SELECTION  ///////////////////////////////////////////////////////////////////////
@@ -222,11 +488,35 @@ selectFeature.on('select', function(e) {
 
 // MAP  ///////////////////////////////////////////////////////////////////////
 
+var viewResolutions = [
+  156543.03392804097,
+  78271.51696402048,
+  39135.75848201024,
+  19567.87924100512,
+  9783.93962050256,
+  4891.96981025128,
+  2445.98490512564,
+  1222.99245256282,
+  611.49622628141,
+  305.748113140705,
+  152.8740565703525,
+  76.43702828517625,
+  38.21851414258813,
+  19.109257071294063,
+  9.554628535647032,
+  4.777314267823516,
+  2.388657133911758,
+  1.194328566955879,
+  0.5971642834779395,
+  0.29858214173896974,
+  0.14929107086948487
+];
+
 var map = new ol.Map({
   interactions: ol.interaction.defaults().extend([
     selectFeature
   ]),
-  layers: [baseMaps, overlays],
+  layers: [baseMaps, overlays, juniperLayers, treatmentLayers],
   controls: ol.control.defaults({
     attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
       collapsible: false
@@ -237,7 +527,8 @@ var map = new ol.Map({
   overlays: [overlay],
   view: new ol.View({
     center: center,
-    zoom: 6
+    zoom: 6,
+    resolutions: viewResolutions
   })
 });
 
@@ -245,5 +536,20 @@ var layerSwitcher = new ol.control.LayerSwitcher({
         // tipLabel: 'Legend' // Optional label for button
 });
 map.addControl(layerSwitcher);
+
+$('.layer-switcher').mouseenter(function() {
+  $('.layer-switcher').find('.group').find('.group').find( ":contains('Hybrid-Header')" ).css('visibility', 'hidden');
+  $('.layer-switcher').find('.group').find('.group').find('li').find(":contains('Hybrid')").parent().css('margin-left', '-10px');
+  $('.layer-switcher').find('.group').find('.group').find('li').find(":contains('Hybrid')").parent().css('margin-top', '-30px');
+});
+
+// hybridInput = $('input[id^="Hybrid"]'); //jquery retains entire state - this will never change
+$('.layer-switcher').click(function() {
+  if($('input[id^="Hybrid"]').is(':checked')) {
+    mapquestHybridLabelLayer.setVisible(true);
+  } else {
+    mapquestHybridLabelLayer.setVisible(false);
+  }
+});
 
 // map.getView().setCenter(ol.proj.transform([-122, 45], 'EPSG:4326', 'EPSG:3857'));
