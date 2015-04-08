@@ -408,13 +408,6 @@ var juniperLayers = new ol.layer.Group({
   layers: [
     ILAPLayers,
     INRLayers
-    // ILAPJunP3,
-    // ILAPJunP2,
-    // ILAPJunP1,
-    // juniperPhase50,
-    // juniperPhase3,
-    // juniperPhase2,
-    // juniperPhase1
   ]
 });
 
