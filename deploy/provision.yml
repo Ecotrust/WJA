@@ -73,6 +73,9 @@
     - name: add user to media group
       user: name={{ remote_user }} groups={{ upload_group }} state=present append=yes
 
+    - name: add www-data to media group
+      user: name=www-data groups={{upload_group}} state=present append=yes
+
     - name: chgrp download dir
       command: chgrp {{ upload_group }} -R {{ media_dir }}
 

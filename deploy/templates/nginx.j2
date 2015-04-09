@@ -6,22 +6,7 @@ server {
     access_log /var/log/nginx/{{ app_name }}.access.log;
     error_log /var/log/nginx/{{ app_name }}.error.log;
 
-    # root gets redirected to angular
-    location = / {
-        return 301 $scheme://{{ domain }}/app/;
-    }
-
-    # Angular app; served from static dist build
-    location /app/ {
-        alias {{ base_path }}/ui/dist/;
-    }
-
-    # Django static files
-    location /static/  {
-        alias {{ project_path }}/{{ app_name }}/static/;
-    }
-
-    # All other URIs get handled by uwsgi
+    # All URIs get handled by uwsgi
     location / {
         uwsgi_pass unix:///var/run/uwsgi/app/{{ app_name }}/socket;
         uwsgi_read_timeout 300;
