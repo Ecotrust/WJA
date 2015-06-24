@@ -44,11 +44,15 @@ for (var i = 0; i < sites.length; i++) {
   });
 }
 
-var icon = new ol.style.Circle({
-  radius: 5,
-  fill: null,
-  stroke: new ol.style.Stroke({color: 'red', width: 1})
-});
+var icon = new ol.style.Icon(
+  ({
+      anchor:[0.5, 1],
+      anchorOrigin: 'top-left',
+      src: '/static/ui/images/marker.png',
+      opacity: 1,
+      scale: 0.5
+  })
+);
 
 var styles = {
   'Point': [new ol.style.Style({
@@ -440,15 +444,15 @@ var center = [-13446448.706997469, 5479654.361694783];
 
 var selectFeature = new ol.interaction.Select({
   style: new ol.style.Style({
-    image: new ol.style.Circle({
-      radius: 5,
-      fill: new ol.style.Fill({
-        color: '#FF0000'
-      }),
-      stroke: new ol.style.Stroke({
-        color: '#000000'
+    image: new ol.style.Icon(
+      ({
+          anchor:[0.5, 1],
+          anchorOrigin: 'top-left',
+          src: '/static/ui/images/marker-selected.png',
+          opacity: 1,
+          scale: 0.5
       })
-    })
+    )
   })
 });
 
