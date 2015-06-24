@@ -316,6 +316,15 @@ var counties = new ol.layer.Tile({
   visible: false
 });
 
+var taxlots = new ol.layer.Tile({
+  title:'Tax Lots (where available)',
+  source: new ol.source.XYZ({
+    attributions: [],
+    url: 'http://tiles.ecotrust.org/tiles/LOT_parcels/{z}/{x}/{y}.png'
+  }),
+  visible: false
+});
+
 var publicRoads = new ol.layer.Tile({
   title:'Public Roads',
   source: new ol.source.XYZ({
@@ -429,6 +438,7 @@ var overlays = new ol.layer.Group({
     ESRIHighways,
     Slope20,
     counties,
+    taxlots,
     // USFWSLands,
     // BLMLandsLayer,
     landOwnership,
