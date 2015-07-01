@@ -27,24 +27,25 @@
     - name: install base packages
       apt: pkg={{ item }} state=present
       with_items:
-        - postgresql-9.3-postgis-2.1
         - build-essential
-        - git-core
         - gdal-bin
+        - git-core
         - htop
-        - libgeos-dev
         - libgdal1-dev
+        - libgeos-dev
+        - munin
         - nginx-full
+        - postfix
+        - postgresql-9.3-postgis-2.1
         - python3-dev
         - python3-pip
         - python3-psycopg2
         - python-psycopg2
-        - uwsgi-plugin-python3
+        - spatialite-bin
         - sysstat
         - uwsgi
-        - postfix
+        - uwsgi-plugin-python3
         - vim
-        - spatialite-bin
 
     - name: git checkout
       when: manage_with_git

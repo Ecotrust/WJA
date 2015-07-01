@@ -6,7 +6,15 @@ server {
     access_log /var/log/nginx/{{ app_name }}.access.log;
     error_log /var/log/nginx/{{ app_name }}.error.log;
 
-    # All URIs get handled by uwsgi
+    location /munin/static/ {
+        alias /etc/munin/static/;
+    }
+
+    location /munin {
+        alias /var/cache/munin/www/;
+    }
+
+    # All URIs (but munin) get handled by uwsgi
     location / {
         uwsgi_pass unix:///var/run/uwsgi/app/{{ app_name }}/socket;
         uwsgi_read_timeout 300;
