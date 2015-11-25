@@ -7,6 +7,7 @@ from django.template.defaultfilters import slugify
 from django.core.exceptions import ValidationError
 from pytz import timezone
 import pytz
+from pprint import pprint
 
 
 class ImportEvent(models.Model):
@@ -222,11 +223,15 @@ class TreatmentProject(models.Model):
             point = self.location.geojson
         else:
             point = None
+        if self.contact_email is not None:
+            email = "<a href='mailto:{0}'>{0}</a>".format(self.contact_email)
+        else:
+            email = None
 
         return {
             'id': self.unique_id,
             'source': self.data_source,
-            'name': self.project_name,
+            'name': self.project_name.title(),
             'ownership': self.ownership,
             'access': self.access,
             'date': date_string,
@@ -234,18 +239,23 @@ class TreatmentProject(models.Model):
             'treated_acres': self.treated_acres,
             'average_slope': self.average_slope,
             'current_status': self.current_status,
-            'tree_species': self.tree_species,
+            'tree_species': self.tree_species.title(),
             'juniper_phase': self.juniper_phase,
             'average_dbh': self.average_dbh,
             'tons_per_acre': self.tons_per_acre,
             'latitude': str(self.latitude),
             'longitude': str(self.longitude),
             'contact_name': self.contact_name,
-            'contact_email': self.contact_email,
+            'contact_email': email,
             'contact_phone': self.contact_phone,
-            'batch': self.batch.to_dict(),
+            'batch': self.human_readable_batch(),
             'point': point
         }
 
+    def human_readable_batch(self):
+        batch = self.batch.to_dict()
+        return ', </br> '.join("<u>{!s}</u>: {!r}".format(key.title(),val) for (key,val) in batch.items())
+
     def __str__(self):
         return "{}: `{}`".format(self.project_name, self.treatment_date)
+

@@ -1,10 +1,17 @@
-
-table {
-    margin: 20px;
-    border: 2px solid #000;
-}
-
 table tr td {
     padding: 5px;
     border: 1px solid #CCC;
 }
+
+.fixed-table-body {
+    overflow-x: hidden;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #d9edf7;
+}
+
+.table-striped > tbody > tr:hover:nth-of-type(odd) {
+    background-color: #c4e3f3;
+}
+
