@@ -7,7 +7,6 @@ from django.template.defaultfilters import slugify
 from django.core.exceptions import ValidationError
 from pytz import timezone
 import pytz
-from pprint import pprint
 
 
 class ImportEvent(models.Model):
