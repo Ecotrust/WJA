@@ -17,7 +17,7 @@
       <div class="row-fluid">
         <div class="span12">
             {% if found %}
-            <h1 class="text-center">{{treatment.name}}</h1>
+            <h1 class="text-center">{{treatment.name|title}}</h1>
             <div id="toolbar">
                 <a href="/">
                     <button type="button" class="btn btn-primary">
@@ -28,8 +28,6 @@
             <table  data-toggle="table"
                     data-classes="table table-hover table-condensed"
                     data-striped="true"
-                    data-sort-name="name"
-                    data-sort-order="aesc"
                     data-search="true"
                     data-toolbar="#toolbar">
                 <thead>
@@ -42,36 +40,9 @@
                     </tr>
                 </thead>
             {% for key, value in treatment.items %}
-                {% if key != 'name' and key != 'batch' and key != 'point' %}
+                {% if key != 'name' and key != 'id' %}
                     <tr>
-                        {% if key == 'average_dbh' %}
-                            <td>Average Diamater at Breast Height</td>
-                        {% elif key == 'average_slope' %}
-                            <td>Average Slope</td>
-                        {% elif key == 'contact_email' %}
-                            <td>Contact Email</td>
-                        {% elif key == 'contact_name' %}
-                            <td>Contact Name</td>
-                        {% elif key == 'contact_phone' %}
-                            <td>Contact Phone</td>
-                        {% elif key == 'current_status' %}
-                            <td>Current Status</td>
-                        {% elif key == 'id' %}
-                           <td>ID</td>
-                        {% elif key == 'juniper_phase' %}
-                            <td>Juniper Phase</td>
-                        {% elif key == 'tons_per_acre' %}
-                            <td>Tons per Acre</td>
-                        {% elif key == 'treated_acres' %}
-                            <td>Treated Acres</td>
-                        {% elif key == 'treatment_type' %}
-                            <td>Treatment Type</td>
-                        {% elif key == 'tree_species' %}
-                            <td>Tree Species</td>
-                        {% else %}
-                            <td>{{key|title}}</td>
-                        {% endif %}
-                        
+                        <td>{{key}}</td>                        
                         <td>{{value|safe}}</td>
                     </tr>
                 {% endif %}

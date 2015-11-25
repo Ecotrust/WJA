@@ -231,7 +231,7 @@ class TreatmentProject(models.Model):
         return {
             'id': self.unique_id,
             'source': self.data_source,
-            'name': self.project_name.title(),
+            'name': self.project_name,
             'ownership': self.ownership,
             'access': self.access,
             'date': date_string,
@@ -239,7 +239,7 @@ class TreatmentProject(models.Model):
             'treated_acres': self.treated_acres,
             'average_slope': self.average_slope,
             'current_status': self.current_status,
-            'tree_species': self.tree_species.title(),
+            'tree_species': self.tree_species,
             'juniper_phase': self.juniper_phase,
             'average_dbh': self.average_dbh,
             'tons_per_acre': self.tons_per_acre,
@@ -248,13 +248,10 @@ class TreatmentProject(models.Model):
             'contact_name': self.contact_name,
             'contact_email': email,
             'contact_phone': self.contact_phone,
-            'batch': self.human_readable_batch(),
+            'batch': self.batch.to_dict(),
             'point': point
         }
 
-    def human_readable_batch(self):
-        batch = self.batch.to_dict()
-        return ', </br> '.join("<u>{!s}</u>: {!r}".format(key.title(),val) for (key,val) in batch.items())
 
     def __str__(self):
         return "{}: `{}`".format(self.project_name, self.treatment_date)
