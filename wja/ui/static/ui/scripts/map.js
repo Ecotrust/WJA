@@ -54,6 +54,16 @@ var icon = new ol.style.Icon(
   })
 );
 
+
+var treatmentStyle = new ol.style.Style({
+  'pointRadius': 4,
+  'strokeWidth': 2,
+  'strokeColor': '#DDAA00',
+  'fillColor': '#DDAA00',
+  'fillOpacity': 0.2
+});
+
+
 var styles = {
   'Point': [new ol.style.Style({
     image: icon
@@ -66,27 +76,19 @@ var styleFunction = function(feature, resolution) {
 
 // Layers ///////////////////////////////////////////////////////////////////////
 
-var vectorSource = new ol.source.GeoJSON(
-    /** @type {olx.source.GeoJSONOptions} */ ({
-      object: {
-        'type': 'FeatureCollection',
-        'crs': {
-          'type': 'name',
-          'properties': {
-            'name': 'EPSG:3857'
+var vectorSource = new ol.source.Vector({
+        features: (new ol.format.GeoJSON()).readFeatures(
+          {
+            'type': 'FeatureCollection',
+            'crs': {
+              'type': 'name',
+              'properties': {
+                'name': 'EPSG:3857'
+              }
+            },
+            'features': features
           }
-        },
-        'features': features
-      }
-    })
-);
-
-var treatmentStyle = new ol.style.Style({
-  'pointRadius': 4,
-  'strokeWidth': 2,
-  'strokeColor': '#DDAA00',
-  'fillColor': '#DDAA00',
-  'fillOpacity': 0.2
+    )
 });
 
 // BASE LAYERS -----------------------------------------------------
@@ -217,7 +219,7 @@ var SageGrouseGenHabitat = new ol.layer.Tile({
   title:'Sage Grouse General Hab.',
   source: new ol.source.XYZ({
     attributions: [],
-    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/sage_grouse_lowden/{z}/{x}/{y}.png'
+    url: '/static/ui/tiles/juniper/arc2earth/sage_grouse_lowden/{z}/{x}/{y}.png'
   }),
   visible: false
 });
@@ -226,7 +228,7 @@ var SageGrousePriorityHabitat = new ol.layer.Tile({
   title:'Sage Grouse Priority Hab.',
   source: new ol.source.XYZ({
     attributions: [],
-    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/sage_grouse_core/{z}/{x}/{y}.png'
+    url: '/static/ui/tiles/juniper/arc2earth/sage_grouse_core/{z}/{x}/{y}.png'
   }),
   visible: false
 });
@@ -235,7 +237,7 @@ var USFWSLands = new ol.layer.Tile({
   title:'USFWS Lands',
   source: new ol.source.XYZ({
     attributions: [],
-    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/USFWS_lands/{z}/{x}/{y}.png'
+    url: '/static/ui/tiles/juniper/arc2earth/USFWS_lands/{z}/{x}/{y}.png'
   }),
   visible: false
 });
@@ -244,7 +246,7 @@ var Slope20 = new ol.layer.Tile({
   title:'Slope > 20%',
   source: new ol.source.XYZ({
     attributions: [],
-    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/slope_gt_20/{z}/{x}/{y}.png'
+    url: '/static/ui/tiles/juniper/arc2earth/slope_gt_20/{z}/{x}/{y}.png'
   }),
   visible: false
 });
@@ -257,7 +259,7 @@ var ESRIHighways = new ol.layer.Tile({
   title:'Major USA Highways',
   source: new ol.source.XYZ({
     attributions: [HwyAttribution],
-    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/ESRI_highways/{z}/{x}/{y}.png'
+    url: '/static/ui/tiles/juniper/arc2earth/ESRI_highways/{z}/{x}/{y}.png'
   }),
   visible: false
 });
@@ -266,7 +268,7 @@ var acecLayer = new ol.layer.Tile({
   title:'Areas of Critical Env. Concern',
   source: new ol.source.XYZ({
     attributions: [],
-    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/acec/{z}/{x}/{y}.png'
+    url: '/static/ui/tiles/juniper/arc2earth/acec/{z}/{x}/{y}.png'
   }),
   visible: false
 });
@@ -275,7 +277,7 @@ var BLMMechTreatLayer = new ol.layer.Tile({
   title:'BLM Mechanical Treatment',
   source: new ol.source.XYZ({
     attributions: [],
-    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/blm_mech_treat/{z}/{x}/{y}.png'
+    url: '/static/ui/tiles/juniper/arc2earth/blm_mech_treat/{z}/{x}/{y}.png'
   }),
   visible: false
 });
@@ -284,7 +286,7 @@ var BLMGrazingAllotmentLayer = new ol.layer.Tile({
   title:'BLM Grazing Allotments',
   source: new ol.source.XYZ({
     attributions: [],
-    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/blm_grazing_allot/{z}/{x}/{y}.png'
+    url: '/static/ui/tiles/juniper/arc2earth/blm_grazing_allot/{z}/{x}/{y}.png'
   }),
   visible: false
 });
@@ -293,7 +295,7 @@ var BLMLandsLayer = new ol.layer.Tile({
   title:'BLM Lands',
   source: new ol.source.XYZ({
     attributions: [],
-    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/blm_lands/{z}/{x}/{y}.png'
+    url: '/static/ui/tiles/juniper/arc2earth/blm_lands/{z}/{x}/{y}.png'
   }),
   visible: false
 });
@@ -329,7 +331,7 @@ var publicRoads = new ol.layer.Tile({
   title:'Public Roads',
   source: new ol.source.XYZ({
     attributions: [],
-    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/public_rds/{z}/{x}/{y}.png'
+    url: '/static/ui/tiles/juniper/arc2earth/public_rds/{z}/{x}/{y}.png'
   }),
   visible: false
 });
@@ -338,7 +340,7 @@ var juniperPhase1 = new ol.layer.Tile({
   title:'Juniper Phase 1 (INR)',
   source: new ol.source.XYZ({
     attributions: [],
-    url: 'http://apps.ecotrust.org/tiles/juniper/pngs/JUNP1/{z}/{x}/{y}.png'
+    url: '/static/ui/tiles/juniper/pngs/JUNP1/{z}/{x}/{y}.png'
   }),
   visible: false
 });
@@ -347,7 +349,7 @@ var juniperPhase2 = new ol.layer.Tile({
   title:'Juniper Phase 2 (INR)',
   source: new ol.source.XYZ({
     attributions: [],
-    url: 'http://apps.ecotrust.org/tiles/juniper/pngs/JUNP2/{z}/{x}/{y}.png'
+    url: '/static/ui/tiles/juniper/pngs/JUNP2/{z}/{x}/{y}.png'
   }),
   visible: false
 });
@@ -356,7 +358,7 @@ var juniperPhase3 = new ol.layer.Tile({
   title:'Juniper Phase 3 (INR)',
   source: new ol.source.XYZ({
     attributions: [],
-    url: 'http://apps.ecotrust.org/tiles/juniper/pngs/JUNP3/{z}/{x}/{y}.png'
+    url: '/static/ui/tiles/juniper/pngs/JUNP3/{z}/{x}/{y}.png'
   }),
   visible: false
 });
@@ -365,7 +367,7 @@ var juniperPhase50 = new ol.layer.Tile({
   title:'Juniper 50%+ (INR)',
   source: new ol.source.XYZ({
     attributions: [],
-    url: 'http://apps.ecotrust.org/tiles/juniper/pngs/INR_GTR50/{z}/{x}/{y}.png'
+    url: '/static/ui/tiles/juniper/pngs/INR_GTR50/{z}/{x}/{y}.png'
   }),
   visible: false
 });
@@ -374,7 +376,7 @@ var ILAPJunP1 = new ol.layer.Tile({
   title:'Juniper Phase 1 (ILAP)',
   source: new ol.source.XYZ({
     attributions: [],
-    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/jun_p1/{z}/{x}/{y}.png'
+    url: '/static/ui/tiles/juniper/arc2earth/jun_p1/{z}/{x}/{y}.png'
   }),
   visible: false
 });
@@ -383,7 +385,7 @@ var ILAPJunP2 = new ol.layer.Tile({
   title:'Juniper Phase 2 (ILAP)',
   source: new ol.source.XYZ({
     attributions: [],
-    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/jun_p2/{z}/{x}/{y}.png'
+    url: '/static/ui/tiles/juniper/arc2earth/jun_p2/{z}/{x}/{y}.png'
   }),
   visible: false
 });
@@ -392,7 +394,7 @@ var ILAPJunP3 = new ol.layer.Tile({
   title:'Juniper Phase 3 (ILAP)',
   source: new ol.source.XYZ({
     attributions: [],
-    url: 'http://apps.ecotrust.org/tiles/juniper/arc2earth/jun_p3/{z}/{x}/{y}.png'
+    url: '/static/ui/tiles/juniper/arc2earth/jun_p3/{z}/{x}/{y}.png'
   }),
   visible: false
 });
