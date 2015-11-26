@@ -35,3 +35,9 @@ Viewer for tracking and utilizing available treated juniper.
     ./init_db.sh
     python manage.py createsuperuser
     # python manage.py systemcheck
+    
+### Tiles
+    Several layers are pulling pre-cut tiles (not served by tilestache or similar). These only work in OL3 for Firefox and IE if served locally. Grab the layers you need from apps.ecotrust.org/tiles/juniper, zip them, scp them to /tmp/, then:
+    
+    sudo tar zxf /tmp/your_file.tar.gz -C /usr/local/apps/wja/wja/static/ui/tiles/juniper/
+    
