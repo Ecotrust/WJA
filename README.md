@@ -26,8 +26,8 @@ Viewer for tracking and utilizing available treated juniper.
     source ~/env/wja/bin/activate
     pip install -r requirements.txt
 
-    See if you have SQLite installed correctly:
-    https://docs.djangoproject.com/en/1.7/ref/contrib/gis/install/spatialite/#sqlite
+See if you have SQLite installed correctly:
+https://docs.djangoproject.com/en/1.7/ref/contrib/gis/install/spatialite/#sqlite
 
 ### Initialize
 
@@ -37,7 +37,7 @@ Viewer for tracking and utilizing available treated juniper.
     # python manage.py systemcheck
     
 ### Tiles
-    Several layers are pulling pre-cut tiles (not served by tilestache or similar). These only work in OL3 for Firefox and IE if served locally. Grab the layers you need from apps.ecotrust.org/tiles/juniper, zip them, scp them to /tmp/, then:
+Several layers are pulling pre-cut tiles (not served by tilestache or similar). These only work in OL3 for Firefox and IE if served locally. Grab the layers you need from apps.ecotrust.org/tiles/juniper, zip them, scp them to /tmp/, then:
     
     sudo tar zxf /tmp/your_file.tar.gz -C /usr/local/apps/wja/wja/static/ui/tiles/juniper/
     
