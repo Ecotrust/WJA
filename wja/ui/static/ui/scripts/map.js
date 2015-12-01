@@ -251,6 +251,15 @@ var Slope20 = new ol.layer.Tile({
   visible: false
 });
 
+var Slope30 = new ol.layer.Tile({
+  title:'Slope > 30%',
+  source: new ol.source.XYZ({
+    attributions: [],
+    url: 'http://tiles.ecotrust.org/tiles/Forest_Planner_slope/{z}/{x}/{y}.png'
+  }),
+  visible: false
+});
+
 var HwyAttribution = new ol.Attribution({
   html: 'Source: ESRI, Tele Atlas North America'
 });
@@ -438,7 +447,7 @@ var overlays = new ol.layer.Group({
     // BLMMechTreatLayer,
     publicRoads,
     ESRIHighways,
-    Slope20,
+    Slope30,
     counties,
     taxlots,
     // USFWSLands,
