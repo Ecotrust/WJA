@@ -176,35 +176,23 @@ var topoMapDigital = new ol.layer.Tile({
 //   type: 'base',
 //   visible: false
 // });
+//
 
-var mapquestAttribution = new ol.Attribution({
-  html: '<p>Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png"></p>'
+var bingAttr = new ol.Attribution({
+  html: 'Source: Bing'
 });
 
-var mapquestHybridBaseLayer = new ol.layer.Tile({
-  title: 'Hybrid',
+var bingHybridBaseLayer = new ol.layer.Tile({
   visible: true,
-  type: 'base',
-  source: new ol.source.MapQuest({layer: 'sat'})
-});
-
-var mapquestHybridLabelLayer = new ol.layer.Tile({
-  visible: true,
-  source: new ol.source.MapQuest({layer: 'hyb'})
-});
-
-var mapquestHybrid = new ol.layer.Group({
-  title: 'Hybrid-Header',
-  style: 'AerialWithLabels',
-  layers: [
-    mapquestHybridBaseLayer,
-    mapquestHybridLabelLayer
-  ]
+  source: new ol.source.BingMaps({
+    imagerySet: 'AerialWithLabels',
+    key: 'AiMKVv3ZTDlCRdUr2AZvMgf6v2SyeK4oFYaFFmuKNiY0mazBeMbGqqVJ61rZ3Ft4'
+  })
 });
 
 var baseMaps = new ol.layer.Group({
   'title': 'Base maps',
-  layers: [topoMapDigital, natGeo, osmLayer, mapquestHybrid]
+  layers: [topoMapDigital, natGeo, osmLayer, bingHybridBaseLayer]
 });
 
  // OVERLAYS -----------------------------------------------------
