@@ -41,3 +41,18 @@ Several layers are pulling pre-cut tiles (not served by tilestache or similar). 
     
     sudo tar zxf /tmp/your_file.tar.gz -C /usr/local/apps/wja/wja/static/ui/tiles/juniper/
     
+# Deploy
+
+There is an issue with permissions that was not handled well (hindsight 20/20 or whatever). Because of this, that permission change needs to be undone (or 'stash'ed) for the provisioning script to run.
+
+### Deploy changes and updates to existing servers by:
+* log in to intended server
+* `cd /usr/local/app/wja/`
+* `sudo git stash`
+* return to you development environment
+* `/deploy/deploy [hostname]`
+
+### Deploy to new servers by:
+ * Update the host file
+ * Uncomment the provision steps where initial data is loaded (if you like)
+ * run the deploy script as above
